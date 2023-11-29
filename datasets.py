@@ -74,7 +74,7 @@ class ImageCaptionDataset(Dataset):
         caption_tokens = self.tokenizer(caption, max_length=self.max_seq_len, padding="max_length", truncation=True, return_tensors="pt")["input_ids"][0]
         all_captions = self.df.loc[index, "all_captions"]
         all_captions_tokens = self.tokenizer(all_captions, max_length=self.max_seq_len, padding="max_length", truncation=True, return_tensors="pt")["input_ids"]
-        print(image.shape)
+
         return {
             "image_id": self.df.loc[index, "image_id"],
             "image_path": image_path,
