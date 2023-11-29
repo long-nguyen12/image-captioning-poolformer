@@ -16,7 +16,7 @@ smoothie = SmoothingFunction()
 from utils import transform, visualize_log
 from datasets import ImageCaptionDataset
 from models import ImageCaptionModel
-
+from torch.nn.parallel import DistributedDataParallel as DDP
 
 def train_epoch(model, train_loader, tokenizer, criterion, optim, epoch, device):
     model.train()
@@ -224,7 +224,7 @@ def main():
         num_heads=args.num_heads,
         dropout=args.dropout,
     )
-    model = nn.DataParallel(model)
+    model = DDP(model)
     model.to(device)
     print("Model to {}".format(device))
 
