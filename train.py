@@ -224,7 +224,6 @@ def main():
         num_heads=args.num_heads,
         dropout=args.dropout,
     )
-    model = DDP(model)
     model.to(device)
     print("Model to {}".format(device))
 
