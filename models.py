@@ -135,12 +135,12 @@ class Encoder(nn.Module):
     def __init__(self, embedding_dim, max_seq_len, encoder_layers, num_heads, dropout=0.1, depth=5, fine_tune=False):
         super(Encoder, self).__init__()
         self.backbone = PoolFormer('S36')
-        self.backbone.load_state_dict(torch.load('checkpoints/poolformer_s36.pth', map_location='cpu'), strict=True)
+        self.backbone.load_state_dict(torch.load('checkpoints/poolformer_s36.pth', map_location='cpu'), strict=False)
         self.set_fine_tune(fine_tune)
 
         # self.avg_pool = nn.AdaptiveAvgPool2d((max_seq_len-1, 512))
-        # self.layers = nn.ModuleList([EncoderLayer(embedding_dim, num_heads, 2048, dropout) for _ in range(encoder_layers)])
-        # self.norm = Norm(embedding_dim)
+        self.layers = nn.ModuleList([EncoderLayer(embedding_dim, num_heads, 2048, dropout) for _ in range(encoder_layers)])
+        self.norm = Norm(embedding_dim)
     
     def forward(self, image):
         features = self.backbone(image)
@@ -149,10 +149,10 @@ class Encoder(nn.Module):
         # x = self.avg_pool(x)
         
         # Propagate through the layers
-        # for layer in self.layers:
-        #     x = layer(x)
+        for layer in self.layers:
+            x = layer(x)
         # # Normalize
-        # x = self.norm(x)
+        x = self.norm(x)
         return x
 
     def set_fine_tune(self, fine_tune=True):
