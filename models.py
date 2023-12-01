@@ -157,7 +157,7 @@ class Encoder(nn.Module):
 
     def set_fine_tune(self, fine_tune=True):
         for p in self.backbone.parameters():
-            p.requires_grad = True
+            p.requires_grad = False
 
 
 # Transformer decoder layer

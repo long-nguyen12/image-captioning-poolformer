@@ -95,8 +95,8 @@ class PoolFormer(nn.Module):
             network.append(PatchEmbed(3, 2, 1, embed_dims[i], embed_dims[i+1]))
 
         self.network = nn.ModuleList(network)
-        self.norm = nn.GroupNorm(1, embed_dims[-1])
-        self.head = nn.Linear(embed_dims[-1], num_classes)
+        # self.norm = nn.GroupNorm(1, embed_dims[-1])
+        # self.head = nn.Linear(embed_dims[-1], num_classes)
         self.num_channels = num_classes
 
     def forward(self, x: Tensor):
@@ -106,6 +106,6 @@ class PoolFormer(nn.Module):
         for i, blk in enumerate(self.network):
             x = blk(x)
 
-        x = self.norm(x)
+        # x = self.norm(x)
         # x = self.head(x.mean([-2, -1]))
         return x
